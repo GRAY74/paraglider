@@ -1,0 +1,66 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css" th:href="@{style.css}">
+</head>
+<body class="text-white bg-dark">
+
+<div class="container d-flex h-100 p-3 mx-auto flex-column">
+    <header th:insert="blocks/header :: header"></header>
+
+    <h2>Изменение данных параплана</h2>
+    <div class="row">
+        <div class="col-sm-6">
+            <form method="post">
+                <div class="form-group">
+                    <label for="name">Наименование параплана:</label>
+                    <input id="name" type="text" name="name" th:value="${paraglider.name}" class="form-control"> <br>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="brand">Брэнд:</label>
+                    <select class="form-control" name="brandId" id="brand">
+                        <option th:each="brand : ${brands}"
+                                th:value="${brand.id}"
+                                th:text="${brand.name}"
+                                th:selected="${brand.id} == ${paraglider.brand.id}">
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label for="sertificat">Сертификат:</label>
+                    <select class="form-control" name="sertificat" id="sertificat">
+                        <option th:each="sert : ${T(com.example.paraglider.models.Paraglider.Sertificat).values()}"
+                                th:value="${sert}"
+                                th:text="${sert.label}"
+                                th:selected="${sert} == ${paraglider.sertificat}"
+                        >
+                        </option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="numberSections">Количество секций:</label>
+                    <input id="numberSections" type="number" name="numberSections" th:value="${paraglider.numberSections}" class="form-control"> <br>
+                </div>
+                <div class="form-group">
+                    <label for="length">Удлинение:</label>
+                    <input id="length" type="number" name="length" th:value="${paraglider.length}" class="form-control" step="0.01"> <br>
+                </div>
+
+                <button type="submit" class="btn btn-success">Добавить параплан</button>
+            </form>
+        </div>
+    </div>
+    <hr>
+
+
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+
+</body>
+</html>
