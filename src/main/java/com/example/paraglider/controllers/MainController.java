@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
@@ -31,6 +32,11 @@ public class MainController {
 
     @Autowired
     ParagliderRepository paragliderRepository;
+
+    @GetMapping("/login")
+    public String login() {
+        return "/login";
+    }
 
     @GetMapping("/")
     public String getParagliders(Model model){
@@ -121,5 +127,13 @@ public class MainController {
             gliders.addAll(paragliderRepository.findAllByBrandName(brand));
         }
         return gliders;
+    }
+
+    @GetMapping("/brands")
+    public String brands(Model model, @ModelAttribute("brand")Brand brand){
+        List<Brand> brandList=brandRepository.findAll();
+        Collections.sort(brandList, (b1, b2)->(b1.getName().compareTo(b2.getName())));
+        model.addAttribute("brands", brandList);
+        return "brands";
     }
 }

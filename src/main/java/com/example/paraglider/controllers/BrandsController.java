@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import java.util.*;
 
 @Controller
+@RequestMapping("/brand")
 public class BrandsController {
 
     @Autowired
@@ -21,28 +22,28 @@ public class BrandsController {
 
     List<Brand> brandList = new ArrayList<>();
 
-    @GetMapping("/brands")
+    @GetMapping("/add")
     public String brands(Model model, @ModelAttribute("brand")Brand brand){
         brandList=brandRepository.findAll();
         Collections.sort(brandList, (b1, b2)->(b1.getName().compareTo(b2.getName())));
         model.addAttribute("brands", brandList);
-        return "brands";
+        return "brand-add";
     }
 
 
-    @PostMapping ("/brands")
+    @PostMapping ("/add")
     public String brandAdd(Model model, @ModelAttribute("brand") @Valid Brand brand, BindingResult bindingResult){
 
         if(bindingResult.hasErrors()) {
             model.addAttribute("brands", brandList);
-            return "brands";
+            return "brand-add";
         }
         brandRepository.save(brand);
-        return "redirect:/brands";
+        return "redirect:/brand/add";
     }
 
 
-    @PostMapping("/brand/{id}/remove")
+    @PostMapping("/{id}/remove")
     public String drandRemove(Model model,
                               @PathVariable(value = "id") int id){
         Brand brand = brandRepository.findById(id).orElse(null);
@@ -52,10 +53,10 @@ public class BrandsController {
             } catch (Exception e){
             }
         }
-        return "redirect:/brands";
+        return "redirect:/brand/add";
     }
 
-    @GetMapping("/brand/{id}/edit")
+    @GetMapping("/{id}/edit")
     public String brandEdit(Model model,
                             @PathVariable(value = "id") int id){
         if(brandRepository.existsById(id)){
@@ -63,10 +64,10 @@ public class BrandsController {
             model.addAttribute("brand", brand);
             return "brand-edit";
         }
-        return "brands";
+        return "brand-add";
     }
 
-    @PostMapping("/brand/{id}/edit")
+    @PostMapping("/{id}/edit")
     public String brandUpdate(Model model,
                               @PathVariable(value = "id") int id,
                               @ModelAttribute("brand") @Valid Brand brand, BindingResult bindingResult ){
@@ -74,7 +75,7 @@ public class BrandsController {
             return "brand-edit";
         }
         brandRepository.save(brand);
-        return "redirect:/brands";
+        return "redirect:/brand/add";
     }
 
 }
