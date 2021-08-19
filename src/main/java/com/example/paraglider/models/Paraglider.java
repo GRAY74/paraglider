@@ -1,6 +1,8 @@
 package com.example.paraglider.models;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotEmpty;
+import javax.validation.constraints.NotNull;
 
 @Entity
 public class Paraglider {
@@ -12,7 +14,9 @@ public class Paraglider {
     @ManyToOne
     Brand brand;
 
+    @NotEmpty(message = "Имя не должно быть пустым")
     String name;
+
     int numberSections;
     float length;
 

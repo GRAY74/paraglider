@@ -7,10 +7,13 @@ import com.example.paraglider.repo.ParagliderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.thymeleaf.engine.ElementName;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
+import javax.validation.constraints.NotEmpty;
 import java.util.*;
 
 @Controller
@@ -25,52 +28,48 @@ public class AdminController {
 
     String brandName;
     Map<String, Boolean> brandSelect=new HashMap<>();
-
+    List<Brand> brands = new ArrayList<>();
+    List<Paraglider> paragliders = new ArrayList<>();
 
     @GetMapping("")
-    public String admin(Model model){
-        Iterable<Brand> brands = brandRepository.findAll();
+    public String admin(Model model,
+                        @ModelAttribute("paraglider") Paraglider paraglider){
+        brands = brandRepository.findAll();
         if(brandSelect.isEmpty()){
             brands.forEach(b->brandSelect.put(b.getName(), false));
         }
 
-        model.addAttribute("brands", brands);
-        model.addAttribute("brandSelect", brandSelect);
-
-        List<Paraglider> paragliders = new ArrayList<>();
         if(brandName!=null){
             paragliders = paragliderRepository.findAllByBrandName(brandName);
         }
+
         model.addAttribute("paragliders", paragliders);
+        model.addAttribute("brands", brands);
+        model.addAttribute("brandSelect", brandSelect);
         return "admin";
     }
 
 
-    @PostMapping("/paraglider/add")
-    public String addPagaglider(Model model, HttpServletRequest request){
-        String name = request.getParameter("name");
+    @PostMapping("")
+    public String addPagaglider(Model model,
+                                @ModelAttribute("paraglider") @Valid Paraglider paraglider, BindingResult bindingResult,
+                                @RequestParam(value="brandId", required = false)  Integer brandId ){
 
-        Paraglider.Sertificat sertificat = Paraglider.Sertificat.valueOf(request.getParameter("sertificat"));
 
-
-        if(!request.getParameter("brandId").isEmpty()) {
-            Optional<Brand> brand = brandRepository.findById(Integer.parseInt(request.getParameter("brandId")));
-            if (brand.isPresent()) {
-                Brand br = brand.get();
-                Paraglider paraglider = new Paraglider(br, name, sertificat);
-
-                if(!request.getParameter("numberSections").isEmpty()){
-                    paraglider.setNumberSections(Integer.parseInt(request.getParameter("numberSections")));
-                }
-
-                if(!request.getParameter("length").isEmpty()){
-                    paraglider.setLength(Float.parseFloat(request.getParameter("length")));
-                }
-
-                paragliderRepository.save(paraglider);
-            }
+        if(brandId==null){
+            bindingResult.rejectValue("brand", "error.paraglider","Выберите фирму");
         }
 
+        if(bindingResult.hasErrors()){
+            model.addAttribute("paragliders", paragliders);
+            model.addAttribute("brands", brands);
+            model.addAttribute("brandSelect", brandSelect);
+            return "admin";
+        }
+
+        Brand brand = brandRepository.findById(brandId).get();
+        paraglider.setBrand(brand);
+        paragliderRepository.save(paraglider);
         return "redirect:/admin";
     }
 
