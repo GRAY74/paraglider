@@ -1,0 +1,25 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${title}" />
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css">
+    <link rel="stylesheet" href="../static/style.css" th:href="@{style.css}">
+</head>
+<body class="text-white bg-dark">
+
+<div class="container d-flex h-100 p-3 mx-auto flex-column">
+    <header th:insert="blocks/header :: header"></header>
+
+    <h2 >Параплан <span th:text="${paraglider.name}" class="text-warning"/></h2>
+    <p><b>Брэнд </b> <span th:text="${paraglider.brand.name}" class="text-warning"/></p>
+    <p><b>Сертификат </b> <span th:text="${paraglider.sertificat.label}" class="text-warning"/></p>
+    <p><b>Количество секций </b> <span th:text="${paraglider.numberSections}"  class="text-warning"/></p>
+    <p><b>Удлинение </b> <span th:text="${paraglider.length}" class="text-warning"/></p>
+    <div th:utext="${paraglider.description}"/>
+
+    <footer th:insert="blocks/footer :: footer"></footer>
+</div>
+
+</body>
+</html>

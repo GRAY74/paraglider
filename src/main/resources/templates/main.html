@@ -51,7 +51,9 @@
                     </thead>
                     <tbody>
                     <tr th:each="paraglider : ${paragliders}">
-                        <td th:text="${paraglider.name}" />
+                        <td>
+                            <a th:href="'/glider/'+${paraglider.id}" th:text="${paraglider.name}" target="new"/>
+                        </td>
                         <td th:text="${paraglider.brand.name}" />
                         <td th:text="${paraglider.sertificat.label}" />
                         <td th:text="${paraglider.numberSections}" />

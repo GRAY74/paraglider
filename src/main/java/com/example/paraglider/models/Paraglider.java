@@ -20,6 +20,9 @@ public class Paraglider {
     int numberSections;
     float length;
 
+    @Lob
+    String description;
+
     Sertificat sertificat;
 
     public enum Sertificat{
@@ -95,5 +98,13 @@ public class Paraglider {
 
     public void setSertificat(Sertificat sertificat) {
         this.sertificat = sertificat;
+    }
+
+    public String getDescription() {
+        return description;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
     }
 }

@@ -7,10 +7,7 @@ import com.example.paraglider.repo.ParagliderRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -130,10 +127,24 @@ public class MainController {
     }
 
     @GetMapping("/brands")
-    public String brands(Model model, @ModelAttribute("brand")Brand brand){
-        List<Brand> brandList=brandRepository.findAll();
-        Collections.sort(brandList, (b1, b2)->(b1.getName().compareTo(b2.getName())));
-        model.addAttribute("brands", brandList);
-        return "brands";
+    public String reactAxios(){
+        return "brandsReactVeiw";
     }
+
+    @GetMapping("/glider/{id}")
+    public String gliderInfo(Model model, @PathVariable(value = "id") long id ){
+        Paraglider paraglider = paragliderRepository.findById(id).get();
+        model.addAttribute("paraglider", paraglider);
+        return "glider-info";
+    }
+
+
+
+//----------------------------------------------------------------------------------------
+// Маршруты для тестирования rest и react разделов приложения
+//----------------------------------------------------------------------------------------
+
+
+
+
 }

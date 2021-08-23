@@ -30,7 +30,6 @@ public class BrandsController {
         return "brand-add";
     }
 
-
     @PostMapping ("/add")
     public String brandAdd(Model model, @ModelAttribute("brand") @Valid Brand brand, BindingResult bindingResult){
 

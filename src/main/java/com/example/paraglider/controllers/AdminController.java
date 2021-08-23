@@ -102,7 +102,8 @@ public class AdminController {
                                    @RequestParam int numberSections,
                                    @RequestParam float length,
                                    @RequestParam Integer brandId,
-                                   @RequestParam Paraglider.Sertificat sertificat
+                                   @RequestParam Paraglider.Sertificat sertificat,
+                                   @RequestParam (required = false)String description
 
     ){
         if(paragliderRepository.existsById(id)){
@@ -115,6 +116,7 @@ public class AdminController {
             }
             paraglider.setNumberSections(numberSections);
             paraglider.setLength(length);
+            paraglider.setDescription(description);
             paragliderRepository.save(paraglider);
         }
 
