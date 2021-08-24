@@ -3,6 +3,7 @@ package com.example.paraglider.models;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.validation.constraints.NotEmpty;
 
 @Entity
@@ -18,6 +19,9 @@ public class Brand {
     String country;
 
     String site;
+
+    @Lob
+    private byte[] logo;
 
 //-------------------------------------------------
     public Brand() {
@@ -60,5 +64,13 @@ public class Brand {
 
     public void setSite(String site) {
         this.site = site;
+    }
+
+    public byte[] getLogo() {
+        return logo;
+    }
+
+    public void setLogo(byte[] logo) {
+        this.logo = logo;
     }
 }
